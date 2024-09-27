@@ -30,7 +30,7 @@
             <?php for ($i = 0; $i < count($secteurs); $i++) { ?> 
                 <th colspan="3"><?php echo $secteurs[$i]["nomination"]; ?></th>
             <?php } ?>
-			<th colspan="3">Total</th>
+            <th colspan="3">Total</th>
         </tr>
         <tr>
             <?php for ($i = 0; $i < count($secteurs); $i++) { ?> 
@@ -38,7 +38,7 @@
                 <th>Fixe</th>
                 <th>Variable</th>
             <?php } ?>
-			<th>Fixe</th>
+            <th>Fixe</th>
             <th>Variable</th>
         </tr>
 
@@ -61,55 +61,58 @@
                     }
                     
                     if ($corresponding_rubsecteur) {
-						if ($corresponding_rubsecteur->idNature == 1){
-							echo '<td>' . $corresponding_rubsecteur->pourcentage . '</td>';
-							echo '<td>0</td>';
-							echo '<td>'. $corresponding_rubsecteur->cout .'</td>'; 
-						}
-						if ($corresponding_rubsecteur->idNature == 0){
-							echo '<td>' . $corresponding_rubsecteur->pourcentage . '</td>';
-							echo '<td>'. $corresponding_rubsecteur->cout .'</td>';
-							echo '<td>'. $corresponding_rubsecteur->cout .'</td>'; 
-						}
-                        else if($corresponding_rubsecteur->idNature == 2){
-							echo '<td>' . $corresponding_rubsecteur->pourcentage . '</td>';
-							echo '<td>'. $corresponding_rubsecteur->cout .'</td>';
-							echo '<td>0</td>'; 
-						}
+                        echo '<td>' . $corresponding_rubsecteur->pourcentage . '</td>';
+                        if ($corresponding_rubsecteur->idNature == 1) { 
+                            echo '<td>' . $corresponding_rubsecteur->cout . '</td>'; 
+                            echo '<td>0</td>'; 
+                        } elseif ($corresponding_rubsecteur->idNature == 0) { 
+                            echo '<td>0</td>'; 
+                            echo '<td>' . $corresponding_rubsecteur->cout . '</td>'; 
+                        } elseif ($corresponding_rubsecteur->idNature == 2) { 
+                            echo '<td>' . $corresponding_rubsecteur->cout . '</td>'; 
+                            echo '<td>' . $corresponding_rubsecteur->cout . '</td>'; 
+                        }
+                    } else {
+                        echo '<td></td><td></td><td></td>';
                     }
                 } ?>
+
+                <td>FDFFFG</td>
+                <td>FDFFFG</td>
             </tr>
         <?php } ?>
 
         <!-- Ligne des totaux des rubriques -->
         <tr>
-			<th>Total des rubriques</th>
-			<th><?php echo($totalRubrique); ?></th>
-			<th colspan="2"></th>
-			<?php 
-			// Initialiser des totaux pour les coûts fixes et variables
-			$totalCoutFixe = array_fill(0, count($secteurs), 0);
-			$totalCoutVariable = array_fill(0, count($secteurs), 0);
-			
-			// Remplir les totaux
-			foreach ($coutParNature as $cout) {
-				$secteurIndex = array_search($cout['secteur'], array_column($secteurs, 'nomination'));
-				if ($secteurIndex !== false) {
-					if ($cout['nature'] === 'Fixe') {
-						$totalCoutFixe[$secteurIndex] += $cout['cout'];
-					} elseif ($cout['nature'] === 'Variable') {
-						$totalCoutVariable[$secteurIndex] += $cout['cout'];
-					}
-				}
-			}
-			
-			// Afficher les totaux pour chaque secteur
-			for ($i = 0; $i < count($secteurs); $i++) { ?>
-				<td></td>
-				<td><?php echo $totalCoutFixe[$i]; ?></td>
-				<td><?php echo $totalCoutVariable[$i]; ?></td>
-			<?php } ?>
-		</tr>
+            <th>Total des rubriques</th>
+            <th><?php echo($totalRubrique); ?></th>
+            <th colspan="2"></th>
+            <?php 
+            // Initialiser des totaux pour les coûts fixes et variables
+            $totalCoutFixe = array_fill(0, count($secteurs), 0);
+            $totalCoutVariable = array_fill(0, count($secteurs), 0);
+            
+            // Remplir les totaux
+            foreach ($coutParNature as $cout) {
+                $secteurIndex = array_search($cout['secteur'], array_column($secteurs, 'nomination'));
+                if ($secteurIndex !== false) {
+                    if ($cout['nature'] === 'Fixe') {
+                        $totalCoutFixe[$secteurIndex] += $cout['cout'];
+                    } elseif ($cout['nature'] === 'Variable') {
+                        $totalCoutVariable[$secteurIndex] += $cout['cout'];
+                    }
+                }
+            }
+
+            // Afficher les totaux pour chaque secteur
+            for ($i = 0; $i < count($secteurs); $i++) { ?>
+                <td></td> <!-- Pourcentage Total -->
+                <td><?php echo $totalCoutFixe[$i]; ?></td>
+                <td><?php echo $totalCoutVariable[$i]; ?></td>
+            <?php } ?>
+            <td>FDFFFG</td>
+            <td>FDFFFG</td>
+        </tr>
 
         <!-- Ligne des totaux par centre -->
         <tr>
@@ -117,8 +120,10 @@
             <?php foreach ($coutTotalSecteur as $parsect) { ?>
                 <th colspan="3"><?php echo $parsect['cout']; ?></th>
             <?php } ?>
+            <td>FDFFFG</td>
+            <td>FDFFFG</td>
         </tr>
     </table>
-	<?php var_dump($coutParNature); ?>
+    <?php var_dump($coutParNature); ?>
 </body>
 </html>
