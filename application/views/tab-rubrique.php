@@ -107,8 +107,8 @@
             // Afficher les totaux pour chaque secteur
             for ($i = 0; $i < count($secteurs); $i++) { ?>
                 <td></td> <!-- Pourcentage Total -->
-                <td><?php echo $totalCoutFixe[$i]; ?></td>
                 <td><?php echo $totalCoutVariable[$i]; ?></td>
+                <td><?php echo $totalCoutFixe[$i]; ?></td>
             <?php } ?>
             <td>FDFFFG</td>
             <td>FDFFFG</td>

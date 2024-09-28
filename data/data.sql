@@ -33,6 +33,15 @@ CREATE TABLE rubriqueSecteur(
     FOREIGN KEY (idRubrique) REFERENCES rubrique(idRubrique),
     FOREIGN KEY (idSecteur) REFERENCES secteur(idSecteur)  
 );
+
+
+/*variable*/
+select sum(cout) from VrubriqueSecteur where idNature = '1';
+
+/*fixe*/
+select sum(cout) from VrubriqueSecteur where idNature = '2';
+
+
 CREATE or REPLACE view Vrubrique as 
 SELECT r.*,n.nomination as nomNature FROM rubrique r
 JOIN nature n On 
@@ -85,8 +94,7 @@ INSERT INTO rubriqueSecteur(idRubrique, idSecteur, pourcentage, cout) VALUES
 		('4','2','80','27709760'),
 		('4','3','5','1731860');
 
-UPDATE Rubrique set total = 5321600 where idRubrique = 1;
-
+UPDATE Rubrique set total = 5321600 where idRubrique = 1; 
 
 SELECT 
     s.nomination AS secteur,
