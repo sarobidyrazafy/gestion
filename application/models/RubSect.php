@@ -6,6 +6,9 @@ class RubSect extends CI_Model {
     public $coutTotalSecteur = array(); // Coûts totaux par secteur
 	public $coutTotalSecteurParNature = array();
 
+	public $coutFixe;
+	public $coutVariable;
+
     public function __construct() {
         parent::__construct();
     }
@@ -19,6 +22,10 @@ class RubSect extends CI_Model {
 
 		// Initialisation des coûts totaux par secteur et par nature de charge
 		$this->coutTotalSecteurParNature = $this->getCoutParSecteurEtNature();
+
+		//Initialisation des totaux des couts variables et fixes
+		$this->coutVariable = $this->getTotalCoutVariable();
+		$this->coutFixe = $this->getTotalCoutFixe();
 
         return $this;
     }
@@ -71,6 +78,51 @@ class RubSect extends CI_Model {
         }
         
         return $resultats;
+    }
+
+	public function getTotalCoutVariable() {
+		$this->db->select_sum('cout'); 
+		$this->db->where('idNature', '1'); 
+		$query = $this->db->get('VrubriqueSecteur'); 
+		return $query->row()->cout;
+	}
+
+	public function getTotalCoutFixe() {
+		$this->db->select_sum('cout'); 
+		$this->db->where('idNature', '2'); 
+		$query = $this->db->get('VrubriqueSecteur'); 
+		return $query->row()->cout;
+	}
+
+	public function getTotalCoutFV() {
+		return $this->coutFixe + $this->coutVariable;
+	}
+	
+	public function getCoutParSecteur($idSecteur) {
+        $this->db->select('cout');
+        $this->db->from('VrubriqueSecteur');
+        $this->db->where('idSecteur', $idSecteur);
+        $query = $this->db->get();
+        return $query->result_array();  
+    }
+
+    public function sommeVerticaleCouts($secteurs) {
+        $tableauxCouts = [];
+        foreach ($secteurs as $secteur) {
+            $tableauxCouts[] = $this->getCoutParSecteur($secteur['idSecteur']);
+        }
+
+        $tabSomme = [];
+        for ($i = 0; $i < count($tableauxCouts[0]); $i++) {
+            $somme = 0;
+            foreach ($tableauxCouts as $tab) {
+                $somme += $tab[$i]['cout'];
+            }
+
+            $tabSomme[] = $somme;
+        }
+
+        return $tabSomme;  
     }
 }
 ?>

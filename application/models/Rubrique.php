@@ -51,5 +51,6 @@ class Rubrique extends CI_Model {
         $query = $this->db->get('rubriqueSecteur'); 
         return $query->row()->cout;
 	}
-			
+
+	
 }

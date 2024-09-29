@@ -36,6 +36,7 @@ class RubriqueController extends CI_Controller {
         $data["rubsecteurs"] = $rubSectInstance->rubSecteurs;
         $data['coutTotalSecteur'] = $rubSectInstance->coutTotalSecteur;
 		$data['coutParNature'] = $rubSectInstance->coutTotalSecteurParNature;
+		$data['coutTotalFV'] = $rubSectInstance->getTotalCoutFV();
 
         $this->load->view("tab-rubrique", $data);
     }

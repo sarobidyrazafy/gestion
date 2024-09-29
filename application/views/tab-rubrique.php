@@ -51,6 +51,10 @@
                 <td><?php echo $rubSect->rubrique["nomNature"]; ?></td>
                 
                 <?php 
+                // Variables pour les totaux fixes et variables
+                $sommeFixe = 0;
+                $sommeVariable = 0;
+
                 foreach ($secteurs as $secteur) {
                     $corresponding_rubsecteur = null;
                     foreach ($rubsecteurs as $rubsecteur) {
@@ -62,23 +66,26 @@
                     
                     if ($corresponding_rubsecteur) {
                         echo '<td>' . $corresponding_rubsecteur->pourcentage . '</td>';
+                        
                         if ($corresponding_rubsecteur->idNature == 1) { 
+                            // Si c'est variable
+                            echo '<td>0</td>';
                             echo '<td>' . $corresponding_rubsecteur->cout . '</td>'; 
-                            echo '<td>0</td>'; 
-                        } elseif ($corresponding_rubsecteur->idNature == 0) { 
-                            echo '<td>0</td>'; 
-                            echo '<td>' . $corresponding_rubsecteur->cout . '</td>'; 
+                            $sommeVariable += $corresponding_rubsecteur->cout;
                         } elseif ($corresponding_rubsecteur->idNature == 2) { 
-                            echo '<td>' . $corresponding_rubsecteur->cout . '</td>'; 
-                            echo '<td>' . $corresponding_rubsecteur->cout . '</td>'; 
+                            // Si c'est fixe
+                            echo '<td>' . $corresponding_rubsecteur->cout . '</td>';
+                            echo '<td>0</td>';
+                            $sommeFixe += $corresponding_rubsecteur->cout;
                         }
                     } else {
                         echo '<td></td><td></td><td></td>';
                     }
                 } ?>
 
-                <td>FDFFFG</td>
-                <td>FDFFFG</td>
+                <!-- Remplacement de FDFFFG par la somme des coûts fixes et variables -->
+                <td><?php echo $sommeFixe; ?></td>
+                <td><?php echo $sommeVariable; ?></td>
             </tr>
         <?php } ?>
 
@@ -107,11 +114,11 @@
             // Afficher les totaux pour chaque secteur
             for ($i = 0; $i < count($secteurs); $i++) { ?>
                 <td></td> <!-- Pourcentage Total -->
-                <td><?php echo $totalCoutVariable[$i]; ?></td>
                 <td><?php echo $totalCoutFixe[$i]; ?></td>
+                <td><?php echo $totalCoutVariable[$i]; ?></td>
             <?php } ?>
-            <td>FDFFFG</td>
-            <td>FDFFFG</td>
+            <td><?php echo array_sum($totalCoutFixe); ?></td>
+            <td><?php echo array_sum($totalCoutVariable); ?></td>
         </tr>
 
         <!-- Ligne des totaux par centre -->
@@ -120,10 +127,9 @@
             <?php foreach ($coutTotalSecteur as $parsect) { ?>
                 <th colspan="3"><?php echo $parsect['cout']; ?></th>
             <?php } ?>
-            <td>FDFFFG</td>
-            <td>FDFFFG</td>
-        </tr>
+            <td colspan="2"><?php echo $coutTotalFV; ?></td>
+			
+		</tr>
     </table>
-    <?php var_dump($coutParNature); ?>
 </body>
 </html>

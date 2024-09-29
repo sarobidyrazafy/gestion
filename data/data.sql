@@ -41,6 +41,8 @@ select sum(cout) from VrubriqueSecteur where idNature = '1';
 /*fixe*/
 select sum(cout) from VrubriqueSecteur where idNature = '2';
 
+select cout from  VrubriqueSecteur where idSecteur = '2';
+
 
 CREATE or REPLACE view Vrubrique as 
 SELECT r.*,n.nomination as nomNature FROM rubrique r
